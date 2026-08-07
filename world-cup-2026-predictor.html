@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>World Cup 2026 Predictor — Peter Mould</title>
+<meta name="description" content="A Poisson goal model that simulated the 2026 World Cup 10,000 times per matchday, published live and scored against the real results.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B161B;--surface:#12232A;--surface-2:#172C33;
+  --rule:#25404A;--rule-soft:#1B333B;
+  --text:#E8EFF0;--muted:#8CA5AA;--signal:#FF7A1A;
+  --paper:#F1F3F1;--paper-rule:#C6CFCB;--ink:#0B161B;
+  --display:"Archivo",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --pad:clamp(20px,5vw,72px);
+  --measure:74ch;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img{max-width:100%;display:block}
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
+
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:9px}
+.eyebrow::before{content:"";width:6px;height:6px;background:var(--signal);border-radius:50%;flex:none}
+
+.nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px var(--pad);background:rgba(11,22,27,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule-soft)}
+.nav a{text-decoration:none}
+.nav-mark{font-family:var(--display);font-variation-settings:"wdth" 120,"wght" 900;font-size:15px}
+.nav-back{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.nav-back:hover{color:var(--signal)}
+
+.wrap{padding:0 var(--pad);max-width:1180px}
+.head{padding:clamp(44px,7vw,88px) var(--pad) 0;max-width:1180px}
+.head h1{font-family:var(--display);font-variation-settings:"wdth" 112,"wght" 800;font-size:clamp(34px,6vw,72px);line-height:.98;letter-spacing:-.02em;margin:18px 0 22px;max-width:16ch}
+.head .lede{font-size:clamp(18px,1.8vw,21px);color:var(--muted);max-width:60ch}
+
+/* BLOCK 1 — hero media */
+.hero-media{
+  margin:clamp(34px,5vw,58px) var(--pad) 0;aspect-ratio:16/9;
+  border:1px solid var(--rule-soft);border-radius:3px;
+  background:linear-gradient(var(--surface-2),var(--surface-2)) padding-box,
+    repeating-linear-gradient(45deg,transparent 0 9px,rgba(232,239,240,.045) 9px 18px);
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;position:relative;overflow:hidden;
+}
+.hero-media p{font-family:var(--mono);font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);max-width:40ch;line-height:1.8}
+.hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.caption{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);padding:10px var(--pad) 0}
+
+/* BLOCK 3 — results */
+.results{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--rule-soft);border-bottom:1px solid var(--rule-soft);margin:clamp(44px,6vw,76px) 0 0}
+.results div{padding:26px 24px 26px 0;border-right:1px solid var(--rule-soft)}
+.results div:last-child{border-right:0}
+.results b{display:block;font-family:var(--display);font-variation-settings:"wdth" 100,"wght" 800;font-size:clamp(24px,3.2vw,38px);line-height:1;letter-spacing:-.02em}
+.results span{display:block;margin-top:9px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+
+section.block{padding:clamp(56px,7vw,96px) var(--pad);max-width:1180px}
+section.block{--fg:#B4C6C9;--hd:var(--text);color:var(--fg)}
+section.block.review{--fg:#1F2E33;--hd:var(--ink);color:var(--fg)}
+section.block h2{font-family:var(--display);font-variation-settings:"wdth" 110,"wght" 800;font-size:clamp(26px,3.6vw,40px);line-height:1.02;letter-spacing:-.015em;margin:14px 0 20px;color:var(--hd)}
+section.block p{max-width:var(--measure);margin-bottom:18px}
+section.block p.tight{max-width:64ch}
+
+.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:30px 0 26px}
+.step{background:var(--surface);border:1px solid var(--rule-soft);border-radius:3px;padding:16px 15px}
+.step span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--signal)}
+.step h4{font-size:15px;font-weight:600;margin:9px 0 6px;line-height:1.25;color:var(--text)}
+.step p{font-size:13.5px;color:var(--muted);line-height:1.5;margin:0}
+
+.figure{margin:26px 0 8px;border:1px solid var(--rule-soft);border-radius:3px;overflow:hidden;background:var(--bg)}
+.figure img{width:100%;height:auto;display:block}
+
+/* honest scorecard — light band break */
+.review{background:var(--paper);color:var(--ink)}
+.review .eyebrow{color:#5C6F72}
+
+.review .figure{border-color:var(--paper-rule)}
+section.block.review .caption{color:#3D5158;padding-left:0}
+.ledger{margin-top:26px;max-width:var(--measure)}
+.ledger-row{display:grid;grid-template-columns:120px 1fr;gap:20px;padding:16px 0;border-top:1px solid var(--paper-rule)}
+.ledger-row:last-child{border-bottom:1px solid var(--paper-rule)}
+.ledger-row span{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#9E4A0C;padding-top:4px}
+.ledger-row p{margin:0;font-size:16px}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 30px}
+.chips li{list-style:none;font-family:var(--mono);font-size:12px;border:1px solid var(--rule-soft);border-radius:2px;padding:6px 11px;color:#B4C6C9;background:var(--surface)}
+.btn{display:inline-block;font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:14px 22px;border:1px solid var(--rule);border-radius:2px;color:var(--text);transition:background .16s,color .16s,border-color .16s}
+.btn:hover{background:var(--text);color:var(--bg);border-color:var(--text)}
+.btn-solid{background:var(--signal);border-color:var(--signal);color:var(--ink);font-weight:600}
+.btn-solid:hover{background:#fff;border-color:#fff;color:var(--ink)}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px}
+
+.next{border-top:1px solid var(--rule-soft);padding:30px var(--pad);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.next a{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
+.next a:hover{color:var(--signal)}
+
+@media(max-width:860px){
+  .results{grid-template-columns:repeat(2,1fr)}
+  .results div:nth-child(2){border-right:0}
+  .results div:nth-child(1),.results div:nth-child(2){border-bottom:1px solid var(--rule-soft)}
+  .pipeline{grid-template-columns:1fr 1fr}
+  .hero-media{aspect-ratio:16/9}
+  .ledger-row{grid-template-columns:1fr;gap:8px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-mark" href="index.html">PETER MOULD</a>
+  <a class="nav-back" href="index.html#work">← All work</a>
+</nav>
+
+<header class="head">
+  <p class="eyebrow">Predictive modelling · published live during the tournament</p>
+  <h1>I published my World Cup odds before a ball was kicked. Here is how they held up.</h1>
+  <p class="lede">A Monte Carlo simulator that played the tournament out 10,000 times, re-ran after every round, and posted its numbers in public while the result was still unknown. That means the whole thing can be marked afterwards — so this page does that, including the parts it got wrong.</p>
+</header>
+
+<div class="hero-media">
+  <img src="assets/wc-dashboard.jpg" alt="Lollipop chart of pre-tournament title probability for the top ten teams, Spain highlighted in orange as the model's favourite at 10.2 percent">
+</div>
+<p class="caption">Pre-tournament output, published before the group stage. Spain came out as favourites — and went on to win it.</p>
+
+<div class="wrap">
+  <div class="results">
+    <div><b>10,000</b><span>simulations per run</span></div>
+    <div><b>48</b><span>teams modelled</span></div>
+    <div><b>#1</b><span>Model rank of the actual winner</span></div>
+    <div><b>Live</b><span>Updated to semi-finals</span></div>
+  </div>
+</div>
+
+<section class="block">
+  <p class="eyebrow">How it works</p>
+  <h2>Four weighted inputs in, ten thousand tournaments out.</h2>
+  <p>Every team carries a composite strength score built from four inputs, weighted by how much each has historically explained tournament results: <b>expected-goals differential</b> at 40%, <b>squad market value</b> at 35% and <b>recent tournament form</b> at 25%, with real penalty-shootout records resolving knockout ties instead of a coin flip.</p>
+  <p>That score sets each side's expected goals for a given fixture, which gives a probability for every plausible scoreline. The simulator then plays the tournament forward 10,000 times — drawing a result for each match, resolving group tables and tiebreakers, carrying winners through the bracket. Counting how often each of the 48 teams survives to each stage gives the published probabilities. After every matchday I swap the real results in for the simulated ones and re-run the whole thing.</p>
+  <p>Before publishing anything I backtested the same model over the 2022 tournament. It returned Argentina as the most likely winner, which was enough to convince me it was worth running live.</p>
+
+  <div class="pipeline">
+    <div class="step"><span>Input</span><h4>Four signals</h4><p>xG differential, squad value, tournament form, penalty records.</p></div>
+    <div class="step"><span>Weighting</span><h4>40 / 35 / 25</h4><p>Weighted composite strength score per team.</p></div>
+    <div class="step"><span>Model</span><h4>Match outcomes</h4><p>Strength gap → expected goals → scoreline probabilities.</p></div>
+    <div class="step"><span>Simulate</span><h4>10,000 runs</h4><p>Groups, tiebreakers and knockouts played to a winner.</p></div>
+    <div class="step"><span>Output</span><h4>Live dashboard</h4><p>Stage-by-stage probabilities, refreshed each matchday.</p></div>
+  </div>
+
+</section>
+
+<section class="block">
+  <p class="eyebrow">Live updating</p>
+  <h2>The numbers moved as the tournament did.</h2>
+  <p>After every completed round I swapped the real results in for the simulated ones and re-ran all 10,000 simulations on the teams still standing. That is the part I find most interesting to look back on: not the single pre-tournament number, but the shape of how confidence built.</p>
+  <p>Spain never lost top spot, but their lead was slim for a long time — 11.3% before kick-off, still only 12.9% after the Round of 32, and level with Argentina and France going into the Round of 16. It was the quarter-finals before the field genuinely thinned, and by the semis it was a coin flip between two teams the model had rated first and second all along.</p>
+
+  <div class="figure">
+    <img src="assets/wc-probability-over-time.png" alt="Line chart of title probability for eight teams across five stages of the tournament, with Spain and Argentina converging on 50 percent by the semi-finals">
+  </div>
+  <p class="caption" style="padding-left:0">Crosses mark elimination. Brazil went out at the Round of 16 rated fourth, which is the sharpest single drop on the chart.</p>
+</section>
+
+<section class="block review">
+  <p class="eyebrow">Marking the model</p>
+  <h2>What it got right, and where it was wrong.</h2>
+  <p class="tight">Every prediction here was timestamped in public before the matches, so there is no room to reinterpret it afterwards. Here is the scorecard.</p>
+
+  <div class="figure">
+    <img src="assets/wc-calibration.png" alt="Scatter plot of pre-tournament model rating against the round each team reached, highlighting Germany and Brazil as high-rated early exits and Norway as a low-rated quarter-finalist">
+  </div>
+  <p class="caption">Each dot is one of the 48 teams. The broad upward trend is the model working; the three labelled dots are where it did not.</p>
+
+  <div class="ledger">
+    <div class="ledger-row">
+      <span>Held up</span>
+      <p><b>It called the winner.</b> Spain were rated first pre-tournament at 10.2% and won it. More convincing than the headline pick, though, is that <b>all four semi-finalists came from the model's top six</b> — Spain first, Argentina second, France third and England sixth. Getting one favourite right can be luck. Getting the whole final four from six names is the ratings doing real work.</p>
+    </div>
+    <div class="ledger-row">
+      <span>Missed</span>
+      <p><b>Germany and Brazil.</b> Rated fifth and sixth on raw strength, both went out far earlier than the model expected — Germany at the Round of 32, Brazil at the Round of 16. Those are the two genuine failures, and they are the clearest argument for the limitation below: neither squad news nor form on the day gets anywhere near this model.</p>
+    </div>
+    <div class="ledger-row">
+      <span>Surprised</span>
+      <p><b>Norway to the quarter-finals</b> from a pre-tournament rank of 19th. Not a failure exactly — someone unexpected always goes deep — but it is the run the model had least support for.</p>
+    </div>
+    <div class="ledger-row">
+      <span>Scored</span>
+      <p><b>Brier score of 0.846</b> on the championship outcome, against roughly 0.98 for a model that guesses at random. That is a real improvement but a modest-looking number, and the reason is worth stating: with 48 possible winners, even a well-calibrated forecast gives its favourite only about a one-in-ten chance, so the score stays high no matter how good the model is. It is most useful as a baseline to beat next time, not as a headline.</p>
+    </div>
+    <div class="ledger-row">
+      <span>Why</span>
+      <p>Squad market value is a noisy proxy for quality, tournament form is a small sample, there is no injury or squad-selection input, and no home-advantage term for the three host nations.</p>
+    </div>
+    <div class="ledger-row">
+      <span>Next</span>
+      <p>A home-advantage term for the hosts, an availability and injury input, and scoring the model against bookmaker odds rather than a random baseline — which is the only comparison that really tests whether four weighted signals beat the market.</p>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <p class="eyebrow">Built with</p>
+  <h2>Stack and source.</h2>
+  <ul class="chips">
+    <li>Python</li><li>pandas</li><li>NumPy</li><li>SciPy</li><li>Monte Carlo simulation</li><li>Weighted composite scoring</li><li>HTML / JS dashboard</li><li>GitHub Pages</li>
+  </ul>
+  <div class="btn-row">
+    <a class="btn btn-solid" href="https://github.com/petermould/world_cup_model_2026" target="_blank" rel="noopener">View the code</a>
+  </div>
+  <p class="tight" style="margin-top:14px">All output ran from the terminal rather than a hosted dashboard — the tables and charts on this page are pulled directly from those runs.</p>
+</section>
+
+<div class="next">
+  <a href="index.html#work">← All work</a>
+  <a href="index.html#contact">Get in touch →</a>
+</div>
+
+</body>
+</html>

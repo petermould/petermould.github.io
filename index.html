@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Peter Mould — Sports Analytics Portfolio</title>
+<meta name="description" content="The portfolio of Peter Mould — goal-line technology operator building computer vision pipelines, player rating systems and football forecasting models.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B161B;
+  --surface:#12232A;
+  --surface-2:#172C33;
+  --rule:#25404A;
+  --rule-soft:#1B333B;
+  --text:#E8EFF0;
+  --muted:#8CA5AA;
+  --signal:#FF7A1A;
+  --paper:#F1F3F1;
+  --paper-rule:#C6CFCB;
+  --ink:#0B161B;
+
+  --display:"Archivo",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --pad:clamp(20px,5vw,72px);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:var(--body);font-size:17px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+img{max-width:100%;display:block}
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
+
+/* ---------- shared type ---------- */
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;gap:9px;
+}
+.eyebrow::before{content:"";width:6px;height:6px;background:var(--signal);border-radius:50%;flex:none}
+.display{
+  font-family:var(--display);font-variation-settings:"wdth" 112,"wght" 800;
+  line-height:.98;letter-spacing:-.02em;text-wrap:balance;
+}
+.section-title{
+  font-family:var(--display);font-variation-settings:"wdth" 110,"wght" 800;
+  font-size:clamp(28px,4vw,44px);line-height:1;letter-spacing:-.015em;
+}
+.lede{font-size:clamp(17px,1.7vw,20px);color:var(--muted);max-width:56ch}
+
+/* ---------- nav ---------- */
+.nav{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px var(--pad);
+  background:rgba(11,22,27,.82);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--rule-soft);
+}
+.nav-mark{
+  font-family:var(--display);font-variation-settings:"wdth" 120,"wght" 900;
+  font-size:15px;letter-spacing:.02em;text-decoration:none;
+}
+.nav-links{display:flex;gap:22px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.nav-links a{text-decoration:none;color:var(--muted);transition:color .15s}
+.nav-links a:hover{color:var(--text)}
+
+/* ---------- hero ---------- */
+.hero{padding:clamp(48px,9vw,110px) var(--pad) 0}
+.hero-head{max-width:1080px}
+.hero h1{font-size:clamp(34px,6.2vw,76px);margin:20px 0 24px;max-width:19ch}
+.hero h1 em{font-style:normal;color:var(--signal)}
+
+/* SIGNATURE: goal-line decision */
+.decision{
+  margin:clamp(40px,6vw,72px) 0 0;
+  background:var(--surface);
+  border:1px solid var(--rule);
+  border-radius:3px;
+  padding:clamp(22px,3.5vw,34px);
+  overflow:hidden;
+}
+.decision-top{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);padding-bottom:16px;
+}
+.glt{width:100%;height:auto;display:block}
+
+.trail circle{opacity:0;animation:trail .5s ease-out forwards}
+.trail circle:nth-child(1){animation-delay:.30s}
+.trail circle:nth-child(2){animation-delay:.42s}
+.trail circle:nth-child(3){animation-delay:.54s}
+.trail circle:nth-child(4){animation-delay:.66s}
+.trail circle:nth-child(5){animation-delay:.78s}
+@keyframes trail{from{opacity:0}to{opacity:.32}}
+.ball{animation:cross 1.5s cubic-bezier(.32,.06,.2,1) forwards}
+@keyframes cross{from{transform:translateX(-330px)}to{transform:translateX(0)}}
+.verdict{opacity:0;animation:pop .45s ease-out 1.35s forwards}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.scanline{animation:sweep 2.4s ease-in-out infinite}
+@keyframes sweep{0%,100%{opacity:.2}50%{opacity:.55}}
+
+/* ---------- stat strip ---------- */
+.stats-wrap{padding:0 var(--pad)}
+.stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--rule-soft);border-bottom:1px solid var(--rule-soft);
+  margin-top:clamp(48px,7vw,90px);
+}
+.stat{padding:26px var(--pad) 26px 0;border-right:1px solid var(--rule-soft)}
+.stat:last-child{border-right:0}
+.stat b{
+  display:block;font-family:var(--display);
+  font-variation-settings:"wdth" 100,"wght" 800;
+  font-size:clamp(26px,3.4vw,40px);line-height:1;letter-spacing:-.02em;
+}
+.stat span{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-top:9px}
+
+/* ---------- sections ---------- */
+.band{padding:clamp(64px,9vw,120px) var(--pad)}
+.band-head{margin-bottom:clamp(32px,4vw,52px);max-width:60ch}
+.band-head .section-title{margin:14px 0 12px}
+
+/* ---------- work grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(18px,2.4vw,30px)}
+.card{
+  display:flex;flex-direction:column;
+  background:var(--surface);border:1px solid var(--rule-soft);
+  border-radius:3px;text-decoration:none;overflow:hidden;
+  transition:border-color .18s,transform .18s,background .18s;
+}
+.card:hover{border-color:var(--rule);background:var(--surface-2);transform:translateY(-3px)}
+.card:hover .card-go{color:var(--signal)}
+.card-wide{grid-column:span 2}
+.card-split{grid-column:span 2;flex-direction:row}
+.card-split .slot{aspect-ratio:16/9;width:52%;flex:none;border-bottom:0;border-right:1px solid var(--rule-soft)}
+.card-split .card-body{justify-content:center}
+.card-split-rev{flex-direction:row-reverse}
+.card-split-rev .slot{border-right:0;border-left:1px solid var(--rule-soft)}
+
+.slot{
+  position:relative;aspect-ratio:16/9;
+  background:
+    linear-gradient(var(--surface-2),var(--surface-2)) padding-box,
+    repeating-linear-gradient(45deg,transparent 0 9px,rgba(232,239,240,.045) 9px 18px);
+  border-bottom:1px solid var(--rule-soft);
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;
+}
+.card-wide .slot{aspect-ratio:21/9}
+.slot p{font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);max-width:34ch;line-height:1.7}
+.slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+.card-body{padding:22px clamp(18px,2vw,26px) 24px;display:flex;flex-direction:column;flex:1}
+.tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.tag-live{color:var(--signal)}
+.card h3{
+  font-family:var(--display);font-variation-settings:"wdth" 105,"wght" 700;
+  font-size:clamp(20px,2.3vw,27px);line-height:1.06;letter-spacing:-.01em;margin:10px 0 10px;
+}
+.card p.desc{font-size:15px;color:var(--muted);line-height:1.55}
+.result{margin-top:18px;padding-top:16px;border-top:1px solid var(--rule-soft);display:flex;flex-wrap:wrap;gap:10px 26px}
+.result div{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--muted)}
+.result b{display:block;font-size:19px;color:var(--text);font-weight:600;letter-spacing:-.01em;margin-bottom:2px}
+.card-go{margin-top:18px;font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text);transition:color .18s}
+
+.sub-head{margin:clamp(48px,6vw,76px) 0 22px;padding-top:26px;border-top:1px solid var(--rule-soft)}
+.sub-note{font-size:15px;color:var(--muted);max-width:62ch;margin-top:10px}
+
+/* ---------- also built ---------- */
+.minor{border-top:1px solid var(--rule-soft);margin-top:clamp(32px,4vw,48px);padding-top:26px}
+.minor-row{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--rule-soft)}
+.minor-row h4{font-size:16px;font-weight:600;min-width:230px}
+.minor-row p{font-size:14.5px;color:var(--muted);flex:1;min-width:220px}
+.minor-row a{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none}
+.minor-row a:hover{color:var(--signal)}
+.minor-row .status{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--signal);opacity:.8}
+
+/* ---------- about (light band, deliberate break) ---------- */
+.about{background:var(--paper);color:#1F2E33}
+.about .eyebrow{color:#3D5158}
+.about-cols{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(30px,5vw,72px);align-items:start}
+.about p{color:#1F2E33;margin-bottom:18px;max-width:60ch}
+.about p strong{color:var(--ink);font-weight:600}
+.kit h5{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#3D5158;margin-bottom:12px}
+.kit ul{list-style:none;margin-bottom:26px;display:flex;flex-wrap:wrap;gap:7px}
+.kit li{font-family:var(--mono);font-size:12px;border:1px solid var(--paper-rule);border-radius:2px;padding:5px 10px;color:#1F2E33;background:#fff}
+
+/* ---------- contact ---------- */
+.contact{padding-bottom:clamp(52px,6vw,84px)}
+.contact h2{font-size:clamp(30px,5vw,58px);max-width:16ch;margin:22px 0 22px}
+.contact .eyebrow{margin-bottom:4px}
+.links{display:flex;flex-wrap:wrap;gap:12px}
+.btn{
+  font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;
+  text-transform:uppercase;text-decoration:none;
+  padding:14px 22px;border:1px solid var(--rule);border-radius:2px;
+  color:var(--text);transition:background .16s,color .16s,border-color .16s;
+}
+.btn:hover{background:var(--text);color:var(--bg);border-color:var(--text)}
+.btn-solid{background:var(--signal);border-color:var(--signal);color:var(--ink);font-weight:600}
+.btn-solid:hover{background:#fff;border-color:#fff;color:var(--ink)}
+
+footer{
+  padding:24px var(--pad);border-top:1px solid var(--rule-soft);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
+}
+
+/* ---------- responsive ---------- */
+@media(max-width:860px){
+  .grid{grid-template-columns:1fr}
+  .card-wide{grid-column:span 1}
+  .card-wide .slot{aspect-ratio:16/9}
+  .card-split{grid-column:span 1;flex-direction:column}
+  .card-split-rev{flex-direction:column}
+  .card-split .slot{width:100%;aspect-ratio:16/9;border-right:0;border-left:0;border-bottom:1px solid var(--rule-soft)}
+  .about-cols{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat{padding-right:20px}
+  .stat:nth-child(2){border-right:0}
+  .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--rule-soft)}
+  .nav-links{gap:14px}
+}
+@media(max-width:520px){.nav-links a:nth-child(2){display:none}}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .trail circle{opacity:.32}
+  .verdict{opacity:1}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-mark" href="#top">PETER MOULD</a>
+  <div class="nav-links">
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="hero-head">
+    <p class="eyebrow">Portfolio · Peter Mould</p>
+    <h1 class="display">I spend matchdays running goal-line technology. The rest of my time I <em>build things with football data.</em></h1>
+    <p class="lede">This is my portfolio: computer vision pipelines that turn footage into numbers, a player rating system covering leagues nobody else rates, and a forecasting model I published before a tournament rather than after it.</p>
+  </div>
+
+  <div class="decision">
+    <div class="decision-top">
+      <span>Goal-line system · camera array 07</span>
+      <span>Frame 00412 · 500 fps</span>
+    </div>
+    <svg class="glt" viewBox="0 0 1000 300" role="img" aria-label="Illustration of a ball crossing the goal line, with the system returning a goal decision.">
+      <defs>
+        <linearGradient id="fade" x1="0" x2="1">
+          <stop offset="0" stop-color="#0B161B" stop-opacity="0"/>
+          <stop offset="1" stop-color="#0B161B" stop-opacity=".55"/>
+        </linearGradient>
+      </defs>
+      <g stroke="#203A43" stroke-width="1">
+        <path d="M0 210 H1000 M0 250 H1000 M0 170 H1000"/>
+        <path d="M120 140 V300 M320 130 V300 M520 120 V300 M760 110 V300"/>
+      </g>
+      <rect x="0" y="0" width="1000" height="300" fill="url(#fade)"/>
+      <g stroke="#7E969B" stroke-width="3" fill="none">
+        <path d="M660 60 H900 M660 60 V235 M900 60 V235"/>
+      </g>
+      <path class="scanline" d="M660 60 V300" stroke="#FF7A1A" stroke-width="2" stroke-dasharray="6 7"/>
+      <text x="672" y="288" font-family="IBM Plex Mono, monospace" font-size="13" fill="#6E8A8F" letter-spacing="2">GOAL LINE</text>
+      <g transform="translate(700 155)">
+        <g class="trail" fill="#7E969B">
+          <circle cx="-330" cy="52" r="13"/><circle cx="-252" cy="30" r="13"/>
+          <circle cx="-176" cy="14" r="13"/><circle cx="-104" cy="4" r="13"/><circle cx="-44" cy="0" r="13"/>
+        </g>
+        <g class="ball">
+          <circle cx="0" cy="0" r="17" fill="#F1F3F1"/>
+          <circle cx="0" cy="0" r="30" fill="none" stroke="#FF7A1A" stroke-width="1.5" stroke-dasharray="4 6"/>
+        </g>
+      </g>
+      <g class="verdict">
+        <rect x="660" y="88" width="240" height="54" rx="2" fill="#FF7A1A"/>
+        <text x="680" y="123" font-family="Archivo, sans-serif" font-weight="800" font-size="30" fill="#0B161B" letter-spacing="1">GOAL</text>
+        <text x="800" y="122" font-family="IBM Plex Mono, monospace" font-size="13" fill="#0B161B">99.4%</text>
+      </g>
+    </svg>
+  </div>
+</header>
+
+<!-- ============ STATS — verify these figures ============ -->
+<div class="stats-wrap">
+  <div class="stats">
+    <div class="stat"><b>3,145</b><span>Players in scouting database</span></div>
+    <div class="stat"><b>5</b><span>Leagues covered</span></div>
+    <div class="stat"><b>10,000</b><span>Simulations per tournament run</span></div>
+    <div class="stat"><b>100</b><span>Teams covered</span></div>
+  </div>
+</div>
+
+<!-- ============ WORK ============ -->
+<section class="band" id="work">
+  <div class="band-head">
+    <p class="eyebrow">Selected work</p>
+    <h2 class="section-title">Built, run, and checked against what actually happened.</h2>
+    <p class="lede">Each of these is a working system rather than a notebook. Where a model made a prediction, I've published how it did — including where it was wrong.</p>
+  </div>
+
+  <div class="grid">
+
+    <a class="card card-split" href="tennis-vision.html">
+      <div class="slot">
+        <img src="assets/tennis-minicourt.jpg" alt="Tennis match frame with detected court keypoints, tracked players, mini-court overlay and a live match stats panel">
+      </div>
+      <div class="card-body">
+        <span class="tag">Computer vision</span>
+        <h3>tennis_vision</h3>
+        <p class="desc">A full broadcast-analysis pipeline. YOLO11 tracks the ball and both players, a ResNet50 model regresses 14 court keypoints, and a homography turns pixel positions into real-world court coordinates — so shot speeds and player movement come out in metres per second rather than pixels.</p>
+        <div class="result">
+          <div><b>14</b>court keypoints</div>
+          <div><b>Homography</b>pixels to metres</div>
+          <div><b>Live</b>shot &amp; player speeds</div>
+        </div>
+        <span class="card-go">Read the case study →</span>
+      </div>
+    </a>
+
+    <a class="card" href="scouting-database.html">
+      <div class="slot">
+        <img src="assets/scouting-chart.jpg" alt="Scouting tool banner: 3,145 players across five second-tier leagues">
+      </div>
+      <div class="card-body">
+        <span class="tag">Data engineering &amp; analysis</span>
+        <h3>Second-Tier Scouting Database</h3>
+        <p class="desc">3,145 players across the Championship, 2. Bundesliga, Ligue 2, Serie B and Brasileir&#227;o S&#233;rie B — collected, cleaned and normalised into per-90 and team-share metrics, then rated with TOPSIS inside nine position groups discovered by K-means clustering. Validated against an independent professional rating source.</p>
+        <div class="result">
+          <div><b>3,145</b>players</div>
+          <div><b>&#961; = 0.62</b>validated vs WhoScored</div>
+        </div>
+        <span class="card-go">Read the case study →</span>
+      </div>
+    </a>
+
+    <a class="card" href="world-cup-2026-predictor.html">
+      <div class="slot">
+        <img src="assets/wc-dashboard.jpg" alt="Lollipop chart of pre-tournament title probability for the top ten teams, Spain highlighted as the model's favourite">
+      </div>
+      <div class="card-body">
+        <span class="tag tag-live">Predictive modelling · ran live through the tournament</span>
+        <h3>World Cup 2026 Predictor</h3>
+        <p class="desc">A Monte Carlo simulator that played all 48 teams through the tournament 10,000 times per run, re-forecasting after every matchday. Published before the group stage and updated in public through to the semi-finals — so every call it made is on the record, including the wrong ones.</p>
+        <div class="result">
+          <div><b>10,000</b>simulations per run</div>
+          <div><b>48</b>teams modelled</div>
+        </div>
+        <span class="card-go">Read the case study →</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- clearly separated: course work, labelled as such -->
+  <div class="sub-head">
+    <p class="eyebrow">Course projects</p>
+    <p class="sub-note">Built by working through published courses. They're here because the techniques carry over — YOLO detection and tracking, optical flow, k-means colour clustering — not because the design is mine.</p>
+  </div>
+
+  <div class="grid">
+    <a class="card card-split card-split-rev" href="https://github.com/petermould/football_analysis" target="_blank" rel="noopener">
+      <div class="slot">
+        <img src="assets/football-frame.jpg" alt="Annotated match frame showing tracked players, team colour assignment, per-player speed and distance, and live possession share">
+      </div>
+      <div class="card-body">
+        <span class="tag">Computer vision · course project</span>
+        <h3>football_analysis</h3>
+        <p class="desc">A follow-through of Abdullah Tarek's football analysis course: YOLO detection with tracking IDs, team assignment by shirt-colour k-means, camera-movement compensation via optical flow, perspective transformation, and per-player speed, distance and possession share. Implemented as published rather than extended.</p>
+        <div class="result">
+          <div><b>Optical flow</b>camera compensation</div>
+          <div><b>k-means</b>team assignment</div>
+        </div>
+        <span class="card-go">View on GitHub →</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="minor">
+    <p class="eyebrow" style="margin-bottom:18px">Also building</p>
+    <div class="minor-row">
+      <h4>Live chessboard to PGN</h4>
+      <p>A 12-class YOLO11s detector reads piece and colour from a camera pointed at a real board, resolves the position to a FEN and evaluates it with Stockfish.</p>
+      <span class="status">In progress</span>
+    </div>
+    <div class="minor-row">
+      <h4>Chess blunder analyser</h4>
+      <p>Parses a PGN, evaluates every move with Stockfish and flags where the game turned, with a pygame board for replaying the position.</p>
+      <span class="status">Repo pending</span>
+    </div>
+    <div class="minor-row">
+      <h4>Squawka data collection</h4>
+      <p>Pulled passing and duel data for leagues that FBref does not cover, to fill the gaps in the scouting database.</p>
+      <span class="status">Repo pending</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="band about" id="about">
+  <div class="about-cols">
+    <div>
+      <p class="eyebrow">About</p>
+      <h2 class="section-title" style="margin:14px 0 22px">Most analysts have never run the system on a matchday.</h2>
+      <p>I work freelance as a <strong>goal-line technology operator</strong>. On a matchday that means calibrating a multi-camera array to the millimetre, signing it off before kick-off, then watching it live knowing a decision nobody can appeal depends on it working.</p>
+      <p>That job taught me the part of this field you can't pick up from a dataset: <strong>camera geometry, homography, calibration and latency</strong> — and what actually happens when a tracking system meets rain, floodlights and a full stadium. It's the same problem space as the computer vision work above, just approached from the operations side first.</p>
+      <p>Since then I've been building the analytical half: YOLO detection and tracking pipelines, a five-league scouting database rated with K-means clustering and TOPSIS, and a Monte Carlo forecasting model I published before a tournament rather than after it. I'm looking for a full-time role in sports analytics or sports technology.</p>
+    </div>
+    <div class="kit">
+      <h5>Computer vision</h5>
+      <ul><li>YOLO11</li><li>OpenCV</li><li>ResNet50</li><li>Roboflow</li><li>Homography</li><li>Optical flow</li></ul>
+      <h5>Modelling &amp; data</h5>
+      <ul><li>Python</li><li>pandas</li><li>NumPy</li><li>scikit-learn</li><li>PyTorch</li><li>Poisson / Monte Carlo</li></ul>
+      <h5>Delivery</h5>
+      <ul><li>Git</li><li>Streamlit</li><li>seaborn</li><li>matplotlib</li><li>Jupyter / Colab</li></ul>
+      <h5>Operations</h5>
+      <ul><li>Multi-camera calibration</li><li>Live system monitoring</li><li>Matchday QA</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="band contact" id="contact">
+  <p class="eyebrow">Contact</p>
+  <h2 class="display">Open to full-time roles in sports analytics and sports tech.</h2>
+  <p class="lede" style="margin-bottom:34px">If any of the above is close to what your team works on, I'd be glad to hear from you. Email is the quickest way to reach me.</p>
+  <div class="links">
+    <a class="btn btn-solid" href="mailto:petermould2002@hotmail.com">Email me</a>
+    <a class="btn" href="https://linkedin.com/in/petermould" target="_blank" rel="noopener">LinkedIn</a>
+    <a class="btn" href="https://github.com/petermould" target="_blank" rel="noopener">GitHub</a>
+    <!-- <a class="btn" href="assets/cv.pdf">Download CV</a> -->
+  </div>
+</section>
+
+<footer>
+  <span>Peter Mould — Sports systems &amp; analytics</span>
+  <span>Broadcast footage used for technical demonstration only — rights remain with the original holders</span>
+</footer>
+
+</body>
+</html>
