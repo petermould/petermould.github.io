@@ -40,7 +40,6 @@ a{color:inherit}
 img{max-width:100%;display:block}
 :focus-visible{outline:2px solid var(--signal);outline-offset:3px}
 
-/* ---------- shared type ---------- */
 .eyebrow{
   font-family:var(--mono);font-size:11px;letter-spacing:.16em;
   text-transform:uppercase;color:var(--muted);
@@ -57,7 +56,6 @@ img{max-width:100%;display:block}
 }
 .lede{font-size:clamp(17px,1.7vw,20px);color:var(--muted);max-width:56ch}
 
-/* ---------- nav ---------- */
 .nav{
   position:sticky;top:0;z-index:50;
   display:flex;align-items:center;justify-content:space-between;
@@ -73,13 +71,11 @@ img{max-width:100%;display:block}
 .nav-links a{text-decoration:none;color:var(--muted);transition:color .15s}
 .nav-links a:hover{color:var(--text)}
 
-/* ---------- hero ---------- */
 .hero{padding:clamp(48px,9vw,110px) var(--pad) 0}
 .hero-head{max-width:1080px}
 .hero h1{font-size:clamp(34px,6.2vw,76px);margin:20px 0 24px;max-width:19ch}
 .hero h1 em{font-style:normal;color:var(--signal)}
 
-/* SIGNATURE: goal-line decision */
 .decision{
   margin:clamp(40px,6vw,72px) 0 0;
   background:var(--surface);
@@ -109,7 +105,6 @@ img{max-width:100%;display:block}
 .scanline{animation:sweep 2.4s ease-in-out infinite}
 @keyframes sweep{0%,100%{opacity:.2}50%{opacity:.55}}
 
-/* ---------- stat strip ---------- */
 .stats-wrap{padding:0 var(--pad)}
 .stats{
   display:grid;grid-template-columns:repeat(4,1fr);
@@ -125,14 +120,13 @@ img{max-width:100%;display:block}
 }
 .stat span{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-top:9px}
 
-/* ---------- sections ---------- */
 .band{padding:clamp(64px,9vw,120px) var(--pad)}
 .band-head{margin-bottom:clamp(32px,4vw,52px);max-width:60ch}
 .band-head .section-title{margin:14px 0 12px}
 
-/* ---------- work grid ---------- */
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(18px,2.4vw,30px)}
 .card{
+  position:relative;
   display:flex;flex-direction:column;
   background:var(--surface);border:1px solid var(--rule-soft);
   border-radius:3px;text-decoration:none;overflow:hidden;
@@ -169,20 +163,20 @@ img{max-width:100%;display:block}
 .result{margin-top:18px;padding-top:16px;border-top:1px solid var(--rule-soft);display:flex;flex-wrap:wrap;gap:10px 26px}
 .result div{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--muted)}
 .result b{display:block;font-size:19px;color:var(--text);font-weight:600;letter-spacing:-.01em;margin-bottom:2px}
-.card{position:relative}
+
 .card-cover{position:absolute;inset:0;z-index:1}
 .card-cover span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
 .card-links{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;margin-top:18px;pointer-events:none}
 .card-links a{pointer-events:auto}
-.card-go{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text);transition:color .18s}
+.card-go{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text);transition:color .18s;text-decoration:none}
 .card:hover .card-go{color:var(--signal)}
 .card-code{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;border:1px solid var(--rule-soft);border-radius:2px;padding:6px 11px;transition:color .15s,border-color .15s}
 .card-code:hover{color:var(--signal);border-color:var(--signal)}
+.card-pending{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);opacity:.65}
 
 .sub-head{margin:clamp(48px,6vw,76px) 0 22px;padding-top:26px;border-top:1px solid var(--rule-soft)}
 .sub-note{font-size:15px;color:var(--muted);max-width:62ch;margin-top:10px}
 
-/* ---------- also built ---------- */
 .minor{border-top:1px solid var(--rule-soft);margin-top:clamp(32px,4vw,48px);padding-top:26px}
 .minor-row{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--rule-soft)}
 .minor-row h4{font-size:16px;font-weight:600;min-width:230px}
@@ -191,7 +185,6 @@ img{max-width:100%;display:block}
 .minor-row a:hover{color:var(--signal)}
 .minor-row .status{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--signal);opacity:.8}
 
-/* ---------- about (light band, deliberate break) ---------- */
 .about{background:var(--paper);color:#1F2E33}
 .about .eyebrow{color:#3D5158}
 .about-cols{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(30px,5vw,72px);align-items:start}
@@ -201,7 +194,6 @@ img{max-width:100%;display:block}
 .kit ul{list-style:none;margin-bottom:26px;display:flex;flex-wrap:wrap;gap:7px}
 .kit li{font-family:var(--mono);font-size:12px;border:1px solid var(--paper-rule);border-radius:2px;padding:5px 10px;color:#1F2E33;background:#fff}
 
-/* ---------- contact ---------- */
 .contact{padding-bottom:clamp(52px,6vw,84px)}
 .contact h2{font-size:clamp(30px,5vw,58px);max-width:16ch;margin:22px 0 22px}
 .contact .eyebrow{margin-bottom:4px}
@@ -222,7 +214,6 @@ footer{
   font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
 }
 
-/* ---------- responsive ---------- */
 @media(max-width:860px){
   .grid{grid-template-columns:1fr}
   .card-wide{grid-column:span 1}
@@ -257,7 +248,6 @@ footer{
   </div>
 </nav>
 
-<!-- ============ HERO ============ -->
 <header class="hero" id="top">
   <div class="hero-head">
     <p class="eyebrow">Portfolio · Peter Mould</p>
@@ -306,7 +296,6 @@ footer{
   </div>
 </header>
 
-<!-- ============ STATS — verify these figures ============ -->
 <div class="stats-wrap">
   <div class="stats">
     <div class="stat"><b>3,145</b><span>Players in scouting database</span></div>
@@ -316,7 +305,6 @@ footer{
   </div>
 </div>
 
-<!-- ============ WORK ============ -->
 <section class="band" id="work">
   <div class="band-head">
     <p class="eyebrow">Selected work</p>
@@ -343,6 +331,26 @@ footer{
         <div class="card-links">
           <a class="card-go" href="tennis-vision.html">Read the case study →</a>
           <a class="card-code" href="https://github.com/petermould/tennis_vision" target="_blank" rel="noopener">GitHub →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-split">
+      <div class="slot">
+        <img src="assets/cricket-bowling.jpg" alt="Cricket bowling delivery with a pose-estimation skeleton overlay tracking shoulder, elbow and wrist, alongside live elbow-angle and wrist-speed graphs">
+      </div>
+      <div class="card-body">
+        <span class="tag tag-live">Computer vision · in progress</span>
+        <h3>Cricket Bowling Analysis</h3>
+        <p class="desc">A pose-estimation pipeline for cricket bowling biomechanics. I hand-annotated 96 frames in CVAT to fine-tune a YOLO11-pose model on a custom shoulder-elbow-wrist skeleton, then built the analysis layer from scratch — elbow angle from joint-vector geometry, wrist speed normalised against the delivery's own peak (the source footage's true frame rate is unknown, so speed is reported relative rather than in m/s). Renders as an annotated video with live-updating angle and speed graphs.</p>
+        <div class="result">
+          <div><b>96</b>hand-annotated frames</div>
+          <div><b>3-point</b>custom skeleton</div>
+          <div><b>Live</b>elbow angle &amp; wrist speed</div>
+        </div>
+        <div class="card-links">
+          <span class="card-pending">Case study — coming soon</span>
+          <a class="card-code" href="https://github.com/petermould/cricket_bowling_analysis" target="_blank" rel="noopener">GitHub →</a>
         </div>
       </div>
     </div>
@@ -389,7 +397,6 @@ footer{
 
   </div>
 
-  <!-- clearly separated: course work, labelled as such -->
   <div class="sub-head">
     <p class="eyebrow">Course projects</p>
     <p class="sub-note">Built by working through published courses. They're here because the techniques carry over — YOLO detection and tracking, optical flow, k-means colour clustering — not because the design is mine.</p>
@@ -433,7 +440,6 @@ footer{
   </div>
 </section>
 
-<!-- ============ ABOUT ============ -->
 <section class="band about" id="about">
   <div class="about-cols">
     <div>
@@ -456,7 +462,6 @@ footer{
   </div>
 </section>
 
-<!-- ============ CONTACT ============ -->
 <section class="band contact" id="contact">
   <p class="eyebrow">Contact</p>
   <h2 class="display">Open to full-time roles in sports technology and analytics.</h2>
