@@ -322,7 +322,7 @@ footer{
       </div>
       <div class="card-body">
         <span class="tag">Computer vision</span>
-        <h3>tennis_vision</h3>
+        <h3>Tennis Vision Analysis</h3>
         <p class="desc">A full broadcast-analysis pipeline. YOLO11 tracks the ball and both players, a ResNet50 model regresses 14 court keypoints, and a homography turns pixel positions into real-world court coordinates — so shot speeds and player movement come out in metres per second rather than pixels.</p>
         <div class="result">
           <div><b>14</b>court keypoints</div>
@@ -341,7 +341,7 @@ footer{
         <img src="assets/cricket-bowling.jpg" alt="Cricket bowling delivery with a pose-estimation skeleton overlay tracking shoulder, elbow and wrist, alongside live elbow-angle and wrist-speed graphs">
       </div>
       <div class="card-body">
-        <span class="tag tag-live">Computer vision · in progress</span>
+        <span class="tag">Computer vision</span>
         <h3>Cricket Bowling Analysis</h3>
         <p class="desc">A pose-estimation pipeline for cricket bowling biomechanics. I hand-annotated 96 frames in CVAT to fine-tune a YOLO11-pose model on a custom shoulder-elbow-wrist skeleton, then built the analysis layer from scratch — elbow angle from joint-vector geometry, wrist speed normalised against the delivery's own peak (the source footage's true frame rate is unknown, so speed is reported relative rather than in m/s). Renders as an annotated video with live-updating angle and speed graphs.</p>
         <div class="result">
